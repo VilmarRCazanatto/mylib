@@ -1,5 +1,5 @@
 import { GoogleSpreadsheet, GoogleSpreadsheetWorksheet } from 'google-spreadsheet'
-import creadentials from '../../credentials.json'
+import creadentials from '../../../credentials.json'
 
 import type { NextApiRequest, NextApiResponse } from 'next'
 

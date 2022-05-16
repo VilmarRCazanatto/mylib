@@ -1,7 +1,7 @@
 import type { NextPage } from 'next'
 import Head from 'next/head'
 
-const ShelfScroll: NextPage = () => {
+const ShelfScroll = () => {
     return (
     <div>
         <div>Meu livros</div>
