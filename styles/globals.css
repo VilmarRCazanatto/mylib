@@ -1,16 +1,23 @@
-html,
-body {
-  padding: 0;
-  margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen,
-    Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
-}
-
-a {
-  color: inherit;
-  text-decoration: none;
-}
+@import url('https://fonts.googleapis.com/css2?family=Dosis:wght@200&display=swap');
 
 * {
+  padding: 0;
+  margin: 0;
   box-sizing: border-box;
+  font-family: 'Dosis', sans-serif;
+  outline: none;
+  transition: all .35s ease-in-out;
+}
+
+body {
+  background-color: var(--back-color);
+}
+
+:root {
+  --accent-color: #798071;
+  --primary-color: #999ac6;
+  --secondary-color: #b8bacf;
+  --back-color: #d2d5dd;
+  --white-color: #e8ebe4;
+
 }

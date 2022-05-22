@@ -2,25 +2,23 @@ import type { NextPage } from 'next'
 import Link from 'next/link'
 import { useState } from 'react'
 
-import { SearchBox, ShelfScroll, Head } from './../components'
-
-type Livro = {
-  title: string,
-  img: string,
-  author: string,
-  release: number
-}
+import { SearchHeader, ShelfScroll, Head } from './../components'
 
 const Home: NextPage = () => {
-  const [searchText, setSearchText] = useState("")
-  const [data, setData]: [Livro[], React.Dispatch<Livro[]>] = useState([] as Livro[])
 
   return (
     <div>
       <Head />
-
-      <h1>ola mundo</h1>
       
+      <SearchHeader />
+      <ShelfScroll />
+      <div >
+
+        <div>
+
+        </div>
+      </div>
+
     </div>
   )
 }

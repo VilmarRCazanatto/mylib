@@ -1,9 +1,9 @@
-import SearchBox from './ShearchBox'
+import SearchHeader from './SearchHeader'
 import ShelfScroll from './ShelfScroll'
 import Head from './CustomHead'
 
 export {
-    SearchBox,
+    SearchHeader,
     ShelfScroll,
     Head,
 }
