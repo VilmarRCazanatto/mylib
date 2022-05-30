@@ -14,6 +14,10 @@ body {
   background-color: var(--back-color);
 }
 
+::-webkit-scrollbar{
+  display: none;
+}
+
 :root {
   --accent-color: #798071;
   --primary-color: #999ac6;

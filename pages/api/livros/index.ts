@@ -5,12 +5,13 @@ import type { NextApiRequest, NextApiResponse } from 'next'
 
 
 type Livro = {
-	name: string,
+	title: string,
 	author: number,
-	year: number,
+	release: number,
 	pages: number,
 	sinopse: string,
-	cover: string
+	cover: string,
+	code: string
 }
 type Response = {
 	status: number,
@@ -24,8 +25,8 @@ const sheetTitle = "books"
 const getRequest = async (sheet: GoogleSpreadsheetWorksheet): Promise<Livro[]> => {
 	const rows = await sheet.getRows()
 
-	return rows.map(({ name, author, year, pages, sinopse, cover }): Livro => {
-		return { name, author: Number(author), year: Number(year), pages: Number(pages), sinopse, cover }
+	return rows.map(({ title, author, release, pages, sinopse, cover, code }): Livro => {
+		return { title, author: Number(author), release: Number(release), pages: Number(pages), sinopse, cover, code }
 	})
 }
 
@@ -33,7 +34,7 @@ const postRequest = async (sheet: GoogleSpreadsheetWorksheet, livro: Livro): Pro
 	let livros = await getRequest(sheet)
 
 	if (livros.filter(cur_livro => 
-		(cur_livro.name == livro.name && cur_livro.author == livro.author)
+		(cur_livro.title == livro.title && cur_livro.author == livro.author)
 	).length) return false
 
 	sheet.addRow(livro)
@@ -68,15 +69,14 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
 				status: 200,
 				livros: await getRequest(sheet)
 			}
-			break
-
+			break;
 		case "POST":
 			if (!req.body) {
 				response = {
 					status: 400,
 					error: "Livro nao enviado"
 				}
-				break
+				break;
 			}
 
 			let livro: Livro
@@ -87,19 +87,20 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
 					status: 400,
 					error: "Livro precisa estar em formato JSON valido"
 				}
-				break
+				break;
 			}
 
 			if (
-				!livro.name ||
+				!livro.title ||
 				!livro.author ||
-				!livro.year ||
+				!livro.release ||
 				!livro.pages ||
 				!livro.sinopse ||
 				!livro.cover ||
+				!livro.code ||
 
 				!Number.isInteger(livro.author) ||
-				!Number.isInteger(livro.year) ||
+				!Number.isInteger(livro.release) ||
 				!Number.isInteger(livro.pages) ||
 
 				livro.pages < 1
@@ -108,7 +109,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
 					status: 400,
 					error: "Livro com informações incompletas e/ou invalidas"
 				}
-				break
+				break;
 			}
 
 			response = await postRequest(sheet, livro) 
@@ -118,20 +119,20 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
 					error: "Livro ja adicionado"
 				}
 
-			break
-
+			break;
 		case "DELETE":
 			response = {
 				status: 501,
 				error: "Deleção de livros ainda não implementada"
 			}
 
-			break
+			break;
 		default:
 			response = {
 				status: 405,
 				error: "Metodo invalido"
 			}
+			break;
 	}
 
 	res.status(response.status).json(response)

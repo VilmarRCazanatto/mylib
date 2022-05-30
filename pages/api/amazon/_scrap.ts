@@ -3,7 +3,7 @@ import * as cheerio from 'cheerio'
 type SearchBook = {
     title: string,
     author: string,
-    img: string,
+    cover: string,
     release: number,
     code: string,
 }
@@ -24,8 +24,8 @@ const getSearch = (html: string): SearchBook[] => {
 
         let $ = cheerio.load(el)
 
-        let img = $('img.s-image').attr('src')
-        if (img) img = img
+        let cover = $('img.s-image').attr('src')
+        if (cover) cover = cover
             .split('/I/')[1]
             .split('._AC')[0]
 
@@ -50,7 +50,7 @@ const getSearch = (html: string): SearchBook[] => {
             return data
         }, { author: "", isAuthor: false, release: 0, isRelease: false })
 
-        return { title, img, author, release, code }
+        return { title, cover, author, release, code }
     }).get() as SearchBook[]
 }
 

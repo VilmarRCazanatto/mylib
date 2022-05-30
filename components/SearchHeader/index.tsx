@@ -1,15 +1,8 @@
 import React, { Dispatch, useState } from 'react'
 import { SearchHeaderContainer, ExpandInputList, SearchedList, Cover } from './style'
+import { Livro } from "./../../types"
 
-type Livro = {
-    title: string,
-    author: string,
-    img: string,
-    release: number,
-    code: string,
-}
-
-const SearchBox = () => {
+const SearchBox = ({ livros }: { livros: Livro[] }) => {
     const [searchState, setSearchState] = useState(false)
     const [searchText, setSearchText] = useState("")
     const [height, setHeight] = useState(0)
@@ -18,17 +11,20 @@ const SearchBox = () => {
 
     const btnClick = async () => {
         if (!searchText.length) return
+        setResult([])
         setLoading(true)
 
         setResult(await fetch(`/api/amazon/search?search_text=${searchText.split(' ').join('+').toLowerCase()}`)
             .then(r => r.json()))
 
-        await setTimeout(() => setLoading(false), 500)
+        setTimeout(setLoading, 500, false)
     }
 
 
     if (typeof window != "undefined") {
-        if (!height) window.onload = () => setHeight(window.innerHeight)
+        if (!height) window.onload = () => {
+            if (!height) setHeight(window.innerHeight)
+        }
     }
 
     return (
@@ -47,11 +43,11 @@ const SearchBox = () => {
                 </div>
                 <SearchedList h={height} isLoading={loading}>
                     <div id="loading"></div>
-                    <div style={{paddingTop: '15px'}}>
+                    <div style={{ paddingTop: '15px' }}>
                         <ul>
                             {result.map(livro => (
                                 <li key={livro.code}>
-                                    <Cover bgId={livro.img}/>
+                                    <Cover bgId={livro.cover} />
                                     <span className="title">{livro.title}</span>
                                     <span className="author">{livro.author}</span>
                                     <span className="release">{livro.release}</span>

@@ -9,6 +9,8 @@ export const SearchHeaderContainer = styled.header`
     box-shadow: 0 0 20px rgba(0,0,0,.7);
     height: calc(var(--elem-height) + 20px + 28px + 8px);
 
+    z-index: 8;
+
     h1 {
         width: 100%;
         height: 28px;

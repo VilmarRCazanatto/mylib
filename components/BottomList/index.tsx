@@ -1,15 +1,17 @@
-import type { NextPage } from 'next'
-import Head from 'next/head'
+import { BottomListContainer } from './style'
 
-const ShelfScroll = () => {
+const BottomList = ({height}: {height: number}) => {
     return (
-        <div>
-            <div>
-
-            </div>
-        </div>
+        <BottomListContainer h={height}>
+            <select>
+                <option>Lerei</option>
+                <option>Lido</option>
+            </select>
+            <button>^</button>
+            <ul></ul>
+        </BottomListContainer>
     )
 
 }
 
-export default ShelfScroll
+export default BottomList
