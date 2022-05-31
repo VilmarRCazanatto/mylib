@@ -1,15 +1,15 @@
 {
     "background_color": "black",
-    "description": "Aplicação de organização de livros. By Vilmar Cazanatto",
+    "description": "Aplicação de organização de livros. By Vilmar Cazanatto.",
     "display": "fullscreen",
     "icons": [
-        {
-            "src": "/icon.png",
-            "sizes": "100x100",
-            "type": "image/png"
-        }
+      {
+        "src": "icon.png",
+        "sizes": "100x100",
+        "type": "image/png"
+      }
     ],
     "name": ".myLib",
     "short_name": ".myLib",
-    "start_url": "/"
-}
+    "start_url": "index.html"
+  }
