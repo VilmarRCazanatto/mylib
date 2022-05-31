@@ -8,4 +8,6 @@ export const BottomContainer = styled.div`
     background: var(--primary-color);
     box-shadow: 0 0 20px rgba(0,0,0,.55);
 
+    overflow: hidden;
+
 `

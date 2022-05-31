@@ -1,13 +1,16 @@
 import { BottomListContainer } from './style'
+import { Dispatch, SetStateAction } from 'react'
 
-const BottomList = ({height}: {height: number}) => {
+const BottomList = ({ height, hide, setHide }: { height: number, hide: boolean, setHide: Dispatch<SetStateAction<boolean>> }) => {
+
+
     return (
-        <BottomListContainer h={height}>
+        <BottomListContainer h={height} hide={hide}>
             <select>
                 <option>Lerei</option>
                 <option>Lido</option>
             </select>
-            <button>^</button>
+            <button onClick={() => setHide(!hide)}></button>
             <ul></ul>
         </BottomListContainer>
     )

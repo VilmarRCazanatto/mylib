@@ -11,7 +11,7 @@ export const ReadingCardContainer = styled.div`
     position: relative;
     width: 100%;
     height: 200px;
-    margin-top: 30px;
+    margin-top: ${props => props.hide ? "-210px" : "30px"};
 
     z-index: 0;
 
