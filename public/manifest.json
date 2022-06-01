@@ -1,0 +1,18 @@
+{
+    "name": ".myLib",
+    "short_name": ".myLib",
+    "theme_color": "#ffffff",
+    "background_color": "#004740",
+    "display": "fullscreen",
+    "orientation": "portrait",
+    "scope": "/",
+    "start_url": "/",
+    "icons": [
+      {
+        "src": "icon192.png",
+        "sizes": "192x192",
+        "type": "image/png"
+      }
+    ],
+    "splash_pages": null
+  }
