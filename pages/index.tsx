@@ -1,38 +1,81 @@
+//EXTERNAL
 import type { NextPage } from 'next'
 import Link from 'next/link'
-import { useEffect, useState } from 'react'
+import { Dispatch, SetStateAction, useEffect, useState } from 'react'
 
+//TYPES
+import { Author, AuthorsAPI_ResponseType, Livro, LivrosAPI_ResponseType } from './../types'
+
+//COMPONENTS
 import { SearchHeader, ShelfScroll, ReadingCard, BottomList, Head } from './../components'
-import { BottomContainer } from './../styles/style'
+import { BottomContainer, InitialLoader } from './../styles/style'
+
 
 const Home: NextPage = () => {
 
+  const [allLoaded, setAllLoaded] = useState(false)
   const [height, setHeight] = useState(0)
-  const [livros, setLivros] = useState([]) as [any[], any]
-
+  const [livros, setLivros] = useState<Livro[]>([])
   const [isListHide, setIsListHide] = useState(true)
+
+  const readingBookFilter = (livros: Livro[]): Livro => {
+    let reading = livros.filter(
+      livro => Math.floor(livro.status) == 1
+    )[0]
+
+    if (!reading) {
+      let will_read = livros.filter(livro => livro.status == -1)
+      reading = will_read[Math.floor(Math.random() * will_read.length)]
+    }
+
+    return reading
+  }
 
   useEffect(() => {
     (async () => {
-      if (typeof window != "undefined" && !height) setHeight(window.innerHeight)
+      if (typeof window != "undefined") setHeight(window.innerHeight)
 
-      const res = await fetch('/api/livros').then(r => r.json())
-      if (res.status == 200) setLivros(res.livros)
+      let livro_res = await fetch('/api/livros').then((r): Promise<LivrosAPI_ResponseType> => r.json())
+      if (livro_res.status != 200 || !livro_res.livros) return
+
+      let author_res = await fetch('/api/livros/authors').then((r): Promise<AuthorsAPI_ResponseType> => r.json())
+      if (author_res.status != 200 || !author_res.authors) return
+
+      let author_names = author_res.authors.map(author => author.name)
+      setLivros(livro_res.livros.map(livro => ({
+        ...livro,
+        author_name: author_names[livro.author - 1]
+      })))
+
 
     })()
   }, [])
 
 
+  //Verificar se todos dados necessarios ja foram carregados
+  useEffect(() => {
+    if  (!height) return
+    if (!livros.length) return
+
+    setAllLoaded(true)
+  },[livros, height])
+
+
   return (
     <div id="root_container">
       <Head />
-      <SearchHeader livros={[]} />
-      <ShelfScroll livros={livros} />
-
-      <BottomContainer h={height}>
-        <ReadingCard hide={isListHide} livro={{...livros[0],author: "Taylor Jankins", sinopse: "Lendária estrela de Hollywood, Evelyn Hugo sempre esteve sob os holofotes ― seja estrelando uma produção vencedora do Oscar, protagonizando algum escândalo ou aparecendo com um novo marido… pela sétima vez. Agora, prestes a completar oitenta anos e reclusa em seu apartamento no Upper East Side, a famigerada atriz decide contar a própria história ― ou sua “verdadeira história” ―, mas com uma condição: que Monique Grant, jornalista iniciante e até então desconhecida, seja a entrevistadora. Ao embarcar nessa misteriosa empreitada, a jovem repórter começa a se dar conta de que nada é por acaso ― e que suas trajetórias podem estar profunda e irreversivelmente conectadas.", rate: 4.6}}/>
-        <BottomList height={height} hide={isListHide} setHide={setIsListHide}/>
-      </BottomContainer>
+      {allLoaded
+      ? (<>
+        <SearchHeader livros={livros} height={height} />
+        <ShelfScroll livros={livros} />
+        <BottomContainer h={height}>
+          <ReadingCard hide={isListHide} livro={readingBookFilter(livros)} />
+          <BottomList height={height} hide={isListHide} setHide={setIsListHide} />
+        </BottomContainer>
+      </>)
+      : (<>
+        <InitialLoader/>
+      </>)}
     </div>
   )
 }

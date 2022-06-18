@@ -1,31 +1,48 @@
-import React, { Dispatch, useState } from 'react'
-import { SearchHeaderContainer, ExpandInputList, SearchedList, Cover } from './style'
+import React, { Dispatch, useEffect, useState } from 'react'
+import { SearchHeaderContainer, ExpandInputList, SearchedList, Cover, AddButton } from './style'
 import { Livro } from "./../../types"
 
-const SearchBox = ({ livros }: { livros: Livro[] }) => {
+const SearchBox = ({ livros, height }: { livros: Livro[], height: number }) => {
     const [searchState, setSearchState] = useState(false)
     const [searchText, setSearchText] = useState("")
-    const [height, setHeight] = useState(0)
     const [loading, setLoading] = useState(false)
     const [result, setResult] = useState<Livro[]>([])
 
     const btnClick = async () => {
-        if (!searchText.length) return
+        if (!searchText.trim().length) return
         setResult([])
         setLoading(true)
 
-        setResult(await fetch(`/api/amazon/search?search_text=${searchText.split(' ').join('+').toLowerCase()}`)
-            .then(r => r.json()))
+        setResult(
+            (await fetch(`/api/amazon/search?search_text=${searchText.split(' ').join('+')}`)
+            .then((r): Promise<Livro[]> => r.json()))
+            .map(livro => ({
+                ...livro,
+                author_name: livro.author.toString(),
+                author: -1
+            }))
+            
+            )
+
+        
 
         setTimeout(setLoading, 500, false)
     }
 
-
-    if (typeof window != "undefined") {
-        if (!height) window.onload = () => {
-            if (!height) setHeight(window.innerHeight)
-        }
-    }
+    useEffect(() => {
+        if (!searchState) setSearchText("")
+    }, [searchState])
+    useEffect(() => {
+        setResult( searchText.trim().length
+            ? livros.filter(livro =>
+                [livro.title, livro.author_name, livro.release]
+                    .join('|')
+                    .toLocaleLowerCase()
+                    .indexOf(searchText) != -1
+            )
+            : [] 
+        )
+    }, [searchText])
 
     return (
         <SearchHeaderContainer>
@@ -37,9 +54,13 @@ const SearchBox = ({ livros }: { livros: Livro[] }) => {
                         <img src="/icon.png" alt="Icone" />
                     </div>
                     <input placeholder="Busque seu livro"
+                        value={searchText}
                         onFocus={() => setSearchState(true)}
-                        onKeyUp={ev => setSearchText((ev.target as HTMLInputElement).value)} />
-                    <button onClick={btnClick}><img src="/amazon.svg" /></button>
+                        onChange={ev => setSearchText(
+                            (ev.target as HTMLInputElement)
+                            .value
+                            .toLowerCase())} />
+                    <button id="amazonBtn" onClick={btnClick}><img src="/amazon.svg" /></button>
                 </div>
                 <SearchedList h={height} isLoading={loading}>
                     <div id="loading"></div>
@@ -47,10 +68,14 @@ const SearchBox = ({ livros }: { livros: Livro[] }) => {
                         <ul>
                             {result.map(livro => (
                                 <li key={livro.code}>
-                                    <Cover bgId={livro.cover} />
-                                    <span className="title">{livro.title}</span>
-                                    <span className="author">{livro.author}</span>
-                                    <span className="release">{livro.release}</span>
+                                    <Cover id="cover" bgId={livro.cover} />
+                                    <span id="title">{livro.title}</span>
+                                    <span id="author">{livro.author_name}</span>
+                                    <span id="release">{livro.release}</span>
+                                    <div id="btnContainer">
+                                        <AddButton options={["will_read.png", "reading.png"]} select={0}/>
+                                        <AddButton options={["will_buy.png", "have.png"]} select={0} />
+                                    </div>
                                 </li>
                             ))}
                         </ul>

@@ -1,5 +1,12 @@
 import styled from 'styled-components'
 
+const gridPosition = ({ x, y, width, height }) => () => `
+    grid-column-start: ${x + 1};
+    grid-row-start: ${y + 1};
+    grid-column-end: ${x + 1 + width};
+    grid-row-end: ${y + 1 + height};
+`
+
 export const SearchHeaderContainer = styled.header`
     --elem-height: 50px;
 
@@ -66,7 +73,7 @@ export const ExpandInputList = styled.div`
     }
     
 
-    button {
+    #amazonBtn {
         position: relative;
         height: var(--elem-height);
         width: 90px;
@@ -74,7 +81,7 @@ export const ExpandInputList = styled.div`
         border: none;
         padding: 12px 16px 1px 5px;
     }
-    button:after {
+    #amazonBtn:after {
         top: 0;
         left: -15px;
         content: "|";
@@ -87,7 +94,7 @@ export const ExpandInputList = styled.div`
         width: 15px;
         background: var(--white-color);
     }
-    button img {
+    #amazonBtn img {
         width: 100%;
         height: 100%;
         cursor: pointer;
@@ -123,39 +130,35 @@ export const SearchedList = styled.div`
     li {
         list-style: none;
         display: grid;
-        grid-template-columns: 80px 1fr 50px;
-        grid-template-rows: 70px 30px;
+        width: 100%;
+        height: 100px;
+        grid-template-columns: 70px 1fr 30px;
+        grid-template-rows: 26px 20px 1fr;
+        grid-gap: 0 5px;
 
         margin-bottom: 10px;
 
         span {overflow: hidden}
 
-        div {
-            grid-column-start: 1;
-            grid-column-end: 2;
-            grid-row-start: 1;
-            grid-row-end: 3;
+        #cover {
+            ${props => gridPosition({x: 0, y: 0, width: 1, height: 3})}
         }
-        .title {
-            grid-column-start: 2;
-            grid-column-end: 4;
-            grid-row-start: 1;
-            grid-row-end: 2;
+        #title {
+            ${props => gridPosition({x: 1, y: 0, width: 2, height: 1})}
 
             font-size: 20px;
             font-weight: 600;
         }
-        .author {
-            grid-column-start: 2;
-            grid-column-end: 3;
-            grid-row-start: 2;
-            grid-row-end: 3;
+        #author {
+            ${props => gridPosition({x: 1, y: 1, width: 1, height: 1})}
         }
-        .release {
-            grid-column-start: 3;
-            grid-column-end: 4;
-            grid-row-start: 2;
-            grid-row-end: 3;
+        #release {
+            ${props => gridPosition({x: 2, y: 1, width: 1, height: 1})}
+        }
+        #btnContainer{
+            ${props => gridPosition({x: 1, y: 2, width: 2, height: 1})}
+            padding-bottom: 5px; 
+            align-items: end;
         }
     }
 `
@@ -166,4 +169,12 @@ export const Cover = styled.div`
     background: ${props => `url("https://m.media-amazon.com/images/I/${props.bgId}.jpg")`};
     background-size: cover;
     background-position: 50%;
+`
+
+export const AddButton = styled.button`
+    height: 30px;
+    width: 30px;
+    background: ${props => `url(/${props.options[props.select]})`};
+    background-size: cover;
+    border: none;
 `

@@ -47,28 +47,26 @@ export const ReadingCardContainer = styled.div`
             ${gridPosition({ x: 1, y: 0, width: 2, height: 1 })}
 
             font-size: 18px;
-            line-height: 26px;
+            line-height: 30px;
         }
         #author {
             ${gridPosition({ x: 1, y: 1, width: 1, height: 1 })}
-
             font-size: 14px;
-            line-height: 20px;
+            line-height: 14px;
         }
         #release {
             ${gridPosition({ x: 2, y: 1, width: 1, height: 1 })}
-
             font-size: 14px;
-            line-height: 20px;
+            line-height: 14px;
         }
         #sinopse {
             ${gridPosition({ x: 1, y: 2, width: 2, height: 1 })}
-            
-            font-size: 13px;
-            line-height: 13px;
+            font-size: 14px;
+            line-height: 14px;
+            margin-bottom: 4px;
         }
         #rate {
-            ${gridPosition({ x: 1, y: 3, width: 2, height: 1 })}            
+            ${gridPosition({ x: 1, y: 3, width: 2, height: 1 })}
         }
     }
 `
@@ -81,4 +79,30 @@ export const Cover = styled.div`
     background-position: 50%;
 
     box-shadow: 0 0 5px rgba(0,0,0,.5);
+`
+
+export const StarRating = styled.div`
+    display: inline-block;
+    padding-bottom: 8px;
+
+    --star-color: #ff9900;
+    --star-bgcolor: #ff990040;
+    --percent: ${props => props.rating / 5 * 100}%;
+
+    :after {
+        content: "★★★★★";
+        font-family: Times;
+        font-size: 20px;
+        line-height: 12px;
+        
+        background: linear-gradient(
+            90deg,
+            var(--star-color),
+            var(--percent),
+            var(--star-bgcolor) var(--percent));
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+
+
+    }
 `
