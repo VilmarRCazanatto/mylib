@@ -1,7 +1,6 @@
 //EXTERNAL
 import type { NextPage } from 'next'
-import Link from 'next/link'
-import { Dispatch, SetStateAction, useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 
 //TYPES
 import { Author, AuthorsAPI_ResponseType, Livro, LivrosAPI_ResponseType } from './../types'
@@ -16,6 +15,7 @@ const Home: NextPage = () => {
   const [allLoaded, setAllLoaded] = useState(false)
   const [height, setHeight] = useState(0)
   const [livros, setLivros] = useState<Livro[]>([])
+  const [authors, setAuthors] = useState<Author[]>([])
   const [isListHide, setIsListHide] = useState(true)
 
   const readingBookFilter = (livros: Livro[]): Livro => {
@@ -46,6 +46,8 @@ const Home: NextPage = () => {
         ...livro,
         author_name: author_names[livro.author - 1]
       })))
+      
+      setAuthors(author_res.authors)
 
 
     })()
@@ -66,7 +68,7 @@ const Home: NextPage = () => {
       <Head />
       {allLoaded
       ? (<>
-        <SearchHeader livros={livros} height={height} />
+        <SearchHeader livros={livros} authors={authors} height={height} />
         <ShelfScroll livros={livros} />
         <BottomContainer h={height}>
           <ReadingCard hide={isListHide} livro={readingBookFilter(livros)} />

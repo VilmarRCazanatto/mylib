@@ -126,6 +126,14 @@ export const SearchedList = styled.div`
         background-position: 50%;
         background-size: 70%;
     }
+
+    #listContainer {
+        width: 100%;
+        padding-top: 15px;
+        ul {
+            width: 100%;
+        }
+    }
     
     li {
         list-style: none;
@@ -141,22 +149,22 @@ export const SearchedList = styled.div`
         span {overflow: hidden}
 
         #cover {
-            ${props => gridPosition({x: 0, y: 0, width: 1, height: 3})}
+            ${props => gridPosition({ x: 0, y: 0, width: 1, height: 3 })}
         }
         #title {
-            ${props => gridPosition({x: 1, y: 0, width: 2, height: 1})}
+            ${props => gridPosition({ x: 1, y: 0, width: 2, height: 1 })}
 
             font-size: 20px;
             font-weight: 600;
         }
         #author {
-            ${props => gridPosition({x: 1, y: 1, width: 1, height: 1})}
+            ${props => gridPosition({ x: 1, y: 1, width: 1, height: 1 })}
         }
         #release {
-            ${props => gridPosition({x: 2, y: 1, width: 1, height: 1})}
+            ${props => gridPosition({ x: 2, y: 1, width: 1, height: 1 })}
         }
         #btnContainer{
-            ${props => gridPosition({x: 1, y: 2, width: 2, height: 1})}
+            ${props => gridPosition({ x: 1, y: 2, width: 2, height: 1 })}
             padding-bottom: 5px; 
             align-items: end;
         }
@@ -171,10 +179,53 @@ export const Cover = styled.div`
     background-position: 50%;
 `
 
-export const AddButton = styled.button`
-    height: 30px;
-    width: 30px;
-    background: ${props => `url(/${props.options[props.select]})`};
-    background-size: cover;
-    border: none;
+export const AddButtonContainer = styled.div`
+    #content {
+        position: relative;
+        button {
+            height: 35px;
+            width: 35px;
+            border: none;
+        }
+        #main {
+            background: ${props => `url(/${props.bgOptions[props.selected]})`};
+            background-size: cover;        
+        }
+        #all_options {
+            position: absolute;
+            top: -35px;
+            background: white;
+            border-radius: 4px;
+            box-shadow: 0 0 5px rgba(0,0,0,.4);
+            transform: ${props => `scale(${props.popupShowed ? 1 : 0})`};
+            transform-origin: 17px 35px;
+            z-index: 80;
+            button { margin: 5px}
+            #i-2 {
+                background: ${props => `url(/${props.bgOptions[-2]})`};
+                background-size: cover;        
+            }
+            #i-1 {
+                background: ${props => `url(/${props.bgOptions[-1]})`};
+                background-size: cover;        
+            }
+            #i1 {
+                background: ${props => `url(/${props.bgOptions[1]})`};
+                background-size: cover;        
+            }
+            #i2 {
+                background: ${props => `url(/${props.bgOptions[2]})`};
+                background-size: cover;        
+            }
+        }
+
+    }
+    #foreground {
+        position: absolute;
+        top: 0;
+        left: 0;
+        height: 100vh;
+        width: 100vw;
+    }
+
 `
